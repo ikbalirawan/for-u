@@ -1,0 +1,229 @@
+```html
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Mau Gak Date Sama Aku? ❤️</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Sacramento&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background: linear-gradient(135deg, #ffdde1 0%, #ee9ca7 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            touch-action: manipulation;
+        }
+
+        .font-love {
+            font-family: 'Sacramento', cursive;
+        }
+
+        /* Heart Floating Animation */
+        .heart-particle {
+            position: fixed;
+            bottom: -20px;
+            color: rgba(255, 105, 180, 0.5);
+            animation: floatUp 5s linear infinite;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) scale(0.8) rotate(0deg);
+                opacity: 0.9;
+            }
+            100% {
+                transform: translateY(-105vh) scale(1.2) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Glassmorphic Container */
+        .glass-box {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 2px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 15px 35px rgba(225, 105, 130, 0.25);
+        }
+
+        /* Runaway Button Smooth Transition */
+        #noBtn {
+            transition: all 0.15s ease-out;
+            position: absolute;
+            z-index: 40;
+        }
+
+        #yesBtn {
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 30;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4 relative">
+
+    <!-- Floating Background Hearts -->
+    <div id="heartContainer" class="fixed inset-0 pointer-events-none z-0"></div>
+
+    <!-- Main Interactive Card -->
+    <div id="card" class="glass-box rounded-3xl p-6 sm:p-8 max-w-sm w-full text-center relative z-10 my-auto">
+        
+        <!-- GIF / Cute Image -->
+        <div class="relative w-36 h-36 mx-auto mb-4">
+            <img id="mainGif" 
+                 src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3ZudGxxOHlyODRncXV3azE2OGptMWdmdG1mZTB5dGN5eWg5dnNreSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/L3X9GvkiP49yh45C5x/giphy.gif" 
+                 alt="Cute Bear" 
+                 class="w-full h-full object-cover rounded-2xl shadow-md border-4 border-white">
+        </div>
+
+        <!-- Dynamic Title -->
+        <h1 id="titleText" class="text-2xl sm:text-3xl font-bold text-pink-600 mb-2 leading-tight">
+            Mau gak nge-date sama aku? 🥺👉👈
+        </h1>
+        
+        <p id="subText" class="text-pink-400 text-xs sm:text-sm font-medium mb-6">
+            Pilih "Mau" yaa, aku janji bakal bikin hari kamu seneng! ✨
+        </p>
+
+        <!-- Button Container -->
+        <div id="btnArea" class="relative min-h-[100px] flex items-center justify-center gap-3">
+            <!-- YES BUTTON -->
+            <button id="yesBtn" onclick="onYesClicked()" 
+                    class="bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-bold px-7 py-3 rounded-full text-base shadow-lg active:scale-95 flex items-center gap-2">
+                <i class="fa-solid fa-heart"></i> Mau!
+            </button>
+
+            <!-- NO BUTTON (RUNAWAY) -->
+            <button id="noBtn" 
+                    class="bg-gray-200 text-gray-600 font-medium px-5 py-2.5 rounded-full text-sm shadow">
+                Gak Mau 😜
+            </button>
+        </div>
+
+        <!-- Teasing Message when she tries to click NO -->
+        <p id="teaseText" class="text-[11px] text-pink-500 mt-4 italic opacity-0 transition-opacity">
+            Ups! Gak bisa dipencet kan? Wkwk 😜 (Percobaan: <span id="tryCount">0</span>x)
+        </p>
+
+        <!-- Celebration Screen (Hidden Initially) -->
+        <div id="celebrationScreen" class="hidden flex-col items-center justify-center space-y-4 mt-2">
+            <div class="bg-pink-100/90 border border-pink-300 p-4 rounded-2xl text-pink-800 space-y-2 shadow-inner">
+                <p class="font-bold text-xl text-pink-600 font-love">YAYYY! Official Date Deal! 🎉</p>
+                <p class="text-xs sm:text-sm leading-relaxed text-gray-700">
+                    Makasih yaaa! ❤️<br>
+                    <strong>Capture / Screenshot halaman ini</strong> terus kirim ke aku yaa buat klaim jajan & jalan-jalannya! 🍦☕🎬
+                </p>
+            </div>
+            <p class="text-[10px] text-pink-400 font-semibold tracking-wider uppercase">See You Soon! ✨</p>
+        </div>
+
+    </div>
+
+    <script>
+        let attempts = 0;
+        const noBtn = document.getElementById('noBtn');
+        const yesBtn = document.getElementById('yesBtn');
+        const card = document.getElementById('card');
+        const teaseText = document.getElementById('teaseText');
+        const tryCount = document.getElementById('tryCount');
+
+        // Function to move the "No" button randomly
+        function dodgeNoButton() {
+            attempts++;
+            tryCount.innerText = attempts;
+            teaseText.classList.remove('opacity-0');
+
+            const cardRect = card.getBoundingClientRect();
+            const btnRect = noBtn.getBoundingClientRect();
+
+            // Calculate boundaries within card padding
+            const padding = 20;
+            const maxX = (cardRect.width / 2) - btnRect.width;
+            const minX = -((cardRect.width / 2) - btnRect.width);
+            const maxY = (cardRect.height / 2) - btnRect.height - 20;
+            const minY = -((cardRect.height / 2) - btnRect.height - 20);
+
+            const randomX = Math.floor(Math.random() * (maxX - minX + 1)) + minX;
+            const randomY = Math.floor(Math.random() * (maxY - minY + 1)) + minY;
+
+            noBtn.style.transform = `translate(${randomX}px, ${randomY}px)`;
+
+            // Scale YES button larger as she keeps failing to press NO
+            const newScale = Math.min(1 + (attempts * 0.1), 1.8);
+            yesBtn.style.transform = `scale(${newScale})`;
+        }
+
+        // Mouse hover for Desktop & Touch start for Mobile Screen
+        noBtn.addEventListener('mouseenter', dodgeNoButton);
+        noBtn.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            dodgeNoButton();
+        });
+        noBtn.addEventListener('click', dodgeNoButton);
+
+        // YES Button Action
+        function onYesClicked() {
+            // Trigger Confetti
+            fireConfetti();
+
+            // Update GIF and Texts
+            document.getElementById('mainGif').src = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3dma3BzaXl4YWxua2c4ZXU2OHIxdms2cXNrb2Qxdms3YTVndmR4MSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/26hpUebp45KqTh4B2/giphy.gif";
+            document.getElementById('titleText').innerText = "MAKASIH YAA! ❤️✨";
+            document.getElementById('subText').innerText = "Yesss akhirnya! Aku tunggu kabar kamu! 😉";
+
+            // Hide buttons & tease message
+            document.getElementById('btnArea').classList.add('hidden');
+            teaseText.classList.add('hidden');
+
+            // Show Celebration
+            const celebration = document.getElementById('celebrationScreen');
+            celebration.classList.remove('hidden');
+            celebration.classList.add('flex');
+        }
+
+        // Heart Confetti Effect
+        function fireConfetti() {
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ['#ff69b4', '#ff1493', '#ffffff', '#ffb6c1']
+            });
+        }
+
+        // Spawn Background Hearts
+        function spawnFloatingHearts() {
+            const container = document.getElementById('heartContainer');
+            for (let i = 0; i < 15; i++) {
+                const heart = document.createElement('i');
+                heart.className = 'fa-solid fa-heart heart-particle';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                heart.style.animationDelay = (Math.random() * 4) + 's';
+                heart.style.fontSize = (Math.random() * 14 + 10) + 'px';
+                container.appendChild(heart);
+            }
+        }
+
+        window.onload = spawnFloatingHearts;
+    </script>
+</body>
+</html>
+```
