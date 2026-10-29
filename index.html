@@ -1,229 +1,313 @@
-```html
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mau Gak Date Sama Aku? ❤️</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Canvas Confetti -->
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Sacramento&display=swap" rel="stylesheet">
+    <title>Mau Ngedate Gak? 🥺</title>
+    
+    <!-- Google Fonts & Canvas Confetti -->
+    <link href="[https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Mali:wght@600&display=swap](https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Mali:wght@600&display=swap)" rel="stylesheet">
+    <script src="[https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js](https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js)"></script>
+    <script src="[https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js](https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js)"></script>
 
     <style>
         * {
-            -webkit-tap-highlight-color: transparent;
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
             user-select: none;
-        }
-
-        body {
-            font-family: 'Fredoka', sans-serif;
-            background: linear-gradient(135deg, #ffdde1 0%, #ee9ca7 100%);
-            min-height: 100vh;
-            overflow-x: hidden;
+            -webkit-user-select: none;
             touch-action: manipulation;
         }
 
-        .font-love {
-            font-family: 'Sacramento', cursive;
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #ffd1ff 0%, #fad0c4 99%, #fad0c4 100%);
+            font-family: 'Fredoka', sans-serif;
+            overflow: hidden;
+            position: relative;
         }
 
-        /* Heart Floating Animation */
-        .heart-particle {
-            position: fixed;
-            bottom: -20px;
-            color: rgba(255, 105, 180, 0.5);
-            animation: floatUp 5s linear infinite;
+        .hearts-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             pointer-events: none;
-            z-index: 1;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .floating-heart {
+            position: absolute;
+            font-size: 1.5rem;
+            animation: floatUp 6s linear infinite;
+            opacity: 0.6;
         }
 
         @keyframes floatUp {
             0% {
-                transform: translateY(0) scale(0.8) rotate(0deg);
-                opacity: 0.9;
+                transform: translateY(100vh) scale(0.5) rotate(0deg);
+                opacity: 0.8;
             }
             100% {
-                transform: translateY(-105vh) scale(1.2) rotate(360deg);
+                transform: translateY(-10vh) scale(1.2) rotate(360deg);
                 opacity: 0;
             }
         }
 
-        /* Glassmorphic Container */
-        .glass-box {
+        .card {
             background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 2px solid rgba(255, 255, 255, 0.9);
-            box-shadow: 0 15px 35px rgba(225, 105, 130, 0.25);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 2.5rem 1.8rem;
+            border-radius: 28px;
+            box-shadow: 0 15px 35px rgba(233, 90, 122, 0.2);
+            text-align: center;
+            max-width: 90%;
+            width: 380px;
+            position: relative;
+            z-index: 10;
+            border: 2px solid rgba(255, 255, 255, 0.6);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        /* Runaway Button Smooth Transition */
-        #noBtn {
-            transition: all 0.15s ease-out;
+        .gif-container {
+            width: 160px;
+            height: 160px;
+            margin: 0 auto 1.2rem;
+            border-radius: 50%;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            border: 4px solid #fff;
+        }
+
+        .gif-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        h1 {
+            color: #ff4b72;
+            font-size: 1.6rem;
+            margin-bottom: 1.5rem;
+            font-family: 'Mali', cursive;
+            line-height: 1.3;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            min-height: 80px;
+            position: relative;
+        }
+
+        button {
+            padding: 12px 28px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            font-family: 'Fredoka', sans-serif;
+            outline: none;
+        }
+
+        .btn-mau {
+            background: linear-gradient(45deg, #ff4b72, #ff758c);
+            color: white;
+            box-shadow: 0 6px 18px rgba(255, 75, 114, 0.4);
+            z-index: 2;
+        }
+
+        .btn-mau:active {
+            transform: scale(0.95);
+        }
+
+        .btn-gak {
+            background: #e0e0e0;
+            color: #666;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
             position: absolute;
-            z-index: 40;
+            z-index: 1;
+            transition: all 0.2s ease-out;
         }
 
-        #yesBtn {
-            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            z-index: 30;
+        /* Tampilan Hasil / Success */
+        .success-screen {
+            display: none;
+            animation: fadeIn 0.5s ease-in forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .success-screen h2 {
+            color: #ff4b72;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            font-family: 'Mali', cursive;
+        }
+
+        .success-screen p {
+            color: #555;
+            font-size: 1.1rem;
+            line-height: 1.5;
+            margin-top: 10px;
         }
     </style>
 </head>
-<body class="flex items-center justify-center min-h-screen p-4 relative">
+<body>
 
-    <!-- Floating Background Hearts -->
-    <div id="heartContainer" class="fixed inset-0 pointer-events-none z-0"></div>
+    <!-- Background Hati Melayang -->
+    <div class="hearts-bg" id="heartsBg"></div>
 
-    <!-- Main Interactive Card -->
-    <div id="card" class="glass-box rounded-3xl p-6 sm:p-8 max-w-sm w-full text-center relative z-10 my-auto">
+    <!-- Main Card -->
+    <div class="card" id="mainCard">
         
-        <!-- GIF / Cute Image -->
-        <div class="relative w-36 h-36 mx-auto mb-4">
-            <img id="mainGif" 
-                 src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3ZudGxxOHlyODRncXV3azE2OGptMWdmdG1mZTB5dGN5eWg5dnNreSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/L3X9GvkiP49yh45C5x/giphy.gif" 
-                 alt="Cute Bear" 
-                 class="w-full h-full object-cover rounded-2xl shadow-md border-4 border-white">
-        </div>
-
-        <!-- Dynamic Title -->
-        <h1 id="titleText" class="text-2xl sm:text-3xl font-bold text-pink-600 mb-2 leading-tight">
-            Mau gak nge-date sama aku? 🥺👉👈
-        </h1>
-        
-        <p id="subText" class="text-pink-400 text-xs sm:text-sm font-medium mb-6">
-            Pilih "Mau" yaa, aku janji bakal bikin hari kamu seneng! ✨
-        </p>
-
-        <!-- Button Container -->
-        <div id="btnArea" class="relative min-h-[100px] flex items-center justify-center gap-3">
-            <!-- YES BUTTON -->
-            <button id="yesBtn" onclick="onYesClicked()" 
-                    class="bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-bold px-7 py-3 rounded-full text-base shadow-lg active:scale-95 flex items-center gap-2">
-                <i class="fa-solid fa-heart"></i> Mau!
-            </button>
-
-            <!-- NO BUTTON (RUNAWAY) -->
-            <button id="noBtn" 
-                    class="bg-gray-200 text-gray-600 font-medium px-5 py-2.5 rounded-full text-sm shadow">
-                Gak Mau 😜
-            </button>
-        </div>
-
-        <!-- Teasing Message when she tries to click NO -->
-        <p id="teaseText" class="text-[11px] text-pink-500 mt-4 italic opacity-0 transition-opacity">
-            Ups! Gak bisa dipencet kan? Wkwk 😜 (Percobaan: <span id="tryCount">0</span>x)
-        </p>
-
-        <!-- Celebration Screen (Hidden Initially) -->
-        <div id="celebrationScreen" class="hidden flex-col items-center justify-center space-y-4 mt-2">
-            <div class="bg-pink-100/90 border border-pink-300 p-4 rounded-2xl text-pink-800 space-y-2 shadow-inner">
-                <p class="font-bold text-xl text-pink-600 font-love">YAYYY! Official Date Deal! 🎉</p>
-                <p class="text-xs sm:text-sm leading-relaxed text-gray-700">
-                    Makasih yaaa! ❤️<br>
-                    <strong>Capture / Screenshot halaman ini</strong> terus kirim ke aku yaa buat klaim jajan & jalan-jalannya! 🍦☕🎬
-                </p>
+        <!-- Layar Pertanyaan -->
+        <div id="questionScreen">
+            <div class="gif-container">
+                <img id="gifImage" src="[https://media.giphy.com/media/cLS1cfxvGOPVpf9g3y/giphy.gif](https://media.giphy.com/media/cLS1cfxvGOPVpf9g3y/giphy.gif)" alt="Cute Bear">
             </div>
-            <p class="text-[10px] text-pink-400 font-semibold tracking-wider uppercase">See You Soon! ✨</p>
+            <h1 id="mainTitle">Mau nggak nge-date sama aku? 🥺👉👈</h1>
+            
+            <div class="btn-group" id="btnGroup">
+                <button class="btn-mau" id="btnMau" onclick="terima()">Mau! 🥰</button>
+                <button class="btn-gak" id="btnGak">Nggak 😜</button>
+            </div>
+        </div>
+
+        <!-- Layar Jawaban "Mau" -->
+        <div class="success-screen" id="successScreen">
+            <div class="gif-container">
+                <img src="[https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif](https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif)" alt="Happy Cat">
+            </div>
+            <h2>Yaaay! 🎉❤️</h2>
+            <p>I knew it! Sampai ketemu pas nge-date yaa! ✨</p>
+            <p style="font-size: 0.9rem; color: #888; margin-top: 15px;">(Kirim screenshot ini ke WhatsApp aku ya! 😉)</p>
         </div>
 
     </div>
 
     <script>
-        let attempts = 0;
-        const noBtn = document.getElementById('noBtn');
-        const yesBtn = document.getElementById('yesBtn');
-        const card = document.getElementById('card');
-        const teaseText = document.getElementById('teaseText');
-        const tryCount = document.getElementById('tryCount');
+        const btnGak = document.getElementById('btnGak');
+        const btnMau = document.getElementById('btnMau');
+        const btnGroup = document.getElementById('btnGroup');
+        const questionScreen = document.getElementById('questionScreen');
+        const successScreen = document.getElementById('successScreen');
+        const gifImage = document.getElementById('gifImage');
 
-        // Function to move the "No" button randomly
-        function dodgeNoButton() {
-            attempts++;
-            tryCount.innerText = attempts;
-            teaseText.classList.remove('opacity-0');
+        let scaleMau = 1;
 
-            const cardRect = card.getBoundingClientRect();
-            const btnRect = noBtn.getBoundingClientRect();
+        // Posisikan awal tombol 'Nggak'
+        function initBtnGakPosition() {
+            btnGak.style.right = '20px';
+        }
+        initBtnGakPosition();
 
-            // Calculate boundaries within card padding
-            const padding = 20;
-            const maxX = (cardRect.width / 2) - btnRect.width;
-            const minX = -((cardRect.width / 2) - btnRect.width);
-            const maxY = (cardRect.height / 2) - btnRect.height - 20;
-            const minY = -((cardRect.height / 2) - btnRect.height - 20);
+        // Fungsi Memindahkan Tombol Nggak
+        function moveBtnGak() {
+            const cardRect = document.getElementById('mainCard').getBoundingClientRect();
+            const btnRect = btnGak.getBoundingClientRect();
 
-            const randomX = Math.floor(Math.random() * (maxX - minX + 1)) + minX;
-            const randomY = Math.floor(Math.random() * (maxY - minY + 1)) + minY;
+            // Hitung batas maksimum koordinat di dalam kartu
+            const maxX = cardRect.width - btnRect.width - 30;
+            const maxY = cardRect.height - btnRect.height - 30;
 
-            noBtn.style.transform = `translate(${randomX}px, ${randomY}px)`;
+            const randomX = Math.max(15, Math.floor(Math.random() * maxX));
+            const randomY = Math.max(15, Math.floor(Math.random() * maxY));
 
-            // Scale YES button larger as she keeps failing to press NO
-            const newScale = Math.min(1 + (attempts * 0.1), 1.8);
-            yesBtn.style.transform = `scale(${newScale})`;
+            btnGak.style.position = 'absolute';
+            btnGak.style.left = `${randomX}px`;
+            btnGak.style.top = `${randomY}px`;
+
+            // Bikin tombol 'Mau' makin besar setiap tombol 'Nggak' coba di-klik
+            scaleMau += 0.15;
+            btnMau.style.transform = `scale(${scaleMau})`;
         }
 
-        // Mouse hover for Desktop & Touch start for Mobile Screen
-        noBtn.addEventListener('mouseenter', dodgeNoButton);
-        noBtn.addEventListener('touchstart', function(e) {
+        // Event listener untuk Desktop & Touch HP
+        btnGak.addEventListener('mouseenter', moveBtnGak);
+        btnGak.addEventListener('touchstart', function(e) {
             e.preventDefault();
-            dodgeNoButton();
+            moveBtnGak();
         });
-        noBtn.addEventListener('click', dodgeNoButton);
+        btnGak.addEventListener('click', moveBtnGak);
 
-        // YES Button Action
-        function onYesClicked() {
-            // Trigger Confetti
-            fireConfetti();
-
-            // Update GIF and Texts
-            document.getElementById('mainGif').src = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3dma3BzaXl4YWxua2c4ZXU2OHIxdms2cXNrb2Qxdms3YTVndmR4MSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/26hpUebp45KqTh4B2/giphy.gif";
-            document.getElementById('titleText').innerText = "MAKASIH YAA! ❤️✨";
-            document.getElementById('subText').innerText = "Yesss akhirnya! Aku tunggu kabar kamu! 😉";
-
-            // Hide buttons & tease message
-            document.getElementById('btnArea').classList.add('hidden');
-            teaseText.classList.add('hidden');
-
-            // Show Celebration
-            const celebration = document.getElementById('celebrationScreen');
-            celebration.classList.remove('hidden');
-            celebration.classList.add('flex');
+        // Efek Suara Sederhana dengan Tone.js
+        function playWinSound() {
+            try {
+                const synth = new Tone.Synth().toDestination();
+                const now = Tone.now();
+                synth.triggerAttackRelease("C5", "8n", now);
+                synth.triggerAttackRelease("E5", "8n", now + 0.15);
+                synth.triggerAttackRelease("G5", "8n", now + 0.3);
+                synth.triggerAttackRelease("C6", "4n", now + 0.45);
+            } catch (e) {
+                console.log("Audio play error:", e);
+            }
         }
 
-        // Heart Confetti Effect
-        function fireConfetti() {
+        // Fungsi saat tombol "Mau" diklik
+        function terima() {
+            playWinSound();
+
+            // Efek Konfeti Hati & Warna-warni
             confetti({
                 particleCount: 100,
                 spread: 70,
                 origin: { y: 0.6 },
-                colors: ['#ff69b4', '#ff1493', '#ffffff', '#ffb6c1']
+                colors: ['#ff4b72', '#ff758c', '#ffffff', '#ffd1ff']
             });
+
+            setTimeout(() => {
+                confetti({
+                    particleCount: 50,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0 }
+                });
+                confetti({
+                    particleCount: 50,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1 }
+                });
+            }, 250);
+
+            // Ganti Layar ke Tampilan Sukses
+            questionScreen.style.display = 'none';
+            successScreen.style.display = 'block';
         }
 
-        // Spawn Background Hearts
-        function spawnFloatingHearts() {
-            const container = document.getElementById('heartContainer');
+        // Elemen Hati Melayang di Background
+        function createFloatingHearts() {
+            const container = document.getElementById('heartsBg');
+            const hearts = ['❤️', '💖', '✨', '🌸', '💕'];
+            
             for (let i = 0; i < 15; i++) {
-                const heart = document.createElement('i');
-                heart.className = 'fa-solid fa-heart heart-particle';
-                heart.style.left = Math.random() * 100 + 'vw';
-                heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
-                heart.style.animationDelay = (Math.random() * 4) + 's';
-                heart.style.fontSize = (Math.random() * 14 + 10) + 'px';
+                const heart = document.createElement('div');
+                heart.className = 'floating-heart';
+                heart.innerText = hearts[Math.floor(Math.random() * hearts.length)];
+                heart.style.left = `${Math.random() * 100}%`;
+                heart.style.animationDelay = `${Math.random() * 5}s`;
+                heart.style.animationDuration = `${4 + Math.random() * 4}s`;
                 container.appendChild(heart);
             }
         }
 
-        window.onload = spawnFloatingHearts;
+        createFloatingHearts();
     </script>
 </body>
 </html>
-```
